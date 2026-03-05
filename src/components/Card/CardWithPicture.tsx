@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { FC, useEffect } from "react";
+import { Tutorial, UserProfile } from "./types";
+import { Timestamp } from "firebase/firestore";
 import { makeStyles } from "@mui/styles";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
+import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
 import Avatar from "@mui/material/Avatar";
@@ -14,6 +16,7 @@ import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
 import TurnedInNotOutlinedIcon from "@mui/icons-material/TurnedInNotOutlined";
 import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useFirebase, useFirestore } from "react-redux-firebase";
 import { getUserProfileData } from "../../store/actions";
@@ -33,6 +36,10 @@ const useStyles = makeStyles(theme => ({
   },
   grow: {
     flexGrow: 1
+  },
+  media: {
+    height: 0,
+    paddingTop: "56.25%" // 16:9
   },
   margin: {
     marginRight: "5px"
@@ -63,7 +70,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function CardWithoutPicture({ tutorial }) {
+const CardWithPicture: FC<{ tutorial: Tutorial }> = ({ tutorial }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const firebase = useFirebase();
@@ -73,27 +80,35 @@ export default function CardWithoutPicture({ tutorial }) {
     getUserProfileData(tutorial?.created_by)(firebase, firestore, dispatch);
   }, [tutorial]);
 
-  const user = useSelector(
+  const user = useSelector<any, UserProfile | undefined>(
     ({
       profile: {
         user: { data }
       }
-    }) => data
+    }: any) => data
   );
 
-  const getTime = timestamp => {
+  const getTime = (timestamp: Timestamp) => {
     return timestamp.toDate().toDateString();
   };
 
   return (
-    <Card className={classes.root} data-testId="codelabz">
+    <Card className={classes.root}>
+      <Link to={`/tutorial/${tutorial?.tutorial_id}`}>
+        <CardMedia
+          className={classes.media}
+          image={tutorial?.featured_image}
+          title="code"
+          data-testId="Image"
+        />
+      </Link>
       <CardHeader
         avatar={
           <Avatar className={classes.avatar}>
             {user?.photoURL && user?.photoURL.length > 0 ? (
               <img src={user?.photoURL} />
             ) : (
-              tutorial?.created_by[0]
+              user?.displayName?.[0]
             )}
           </Avatar>
         }
@@ -101,7 +116,7 @@ export default function CardWithoutPicture({ tutorial }) {
           <React.Fragment>
             <Typography
               component="span"
-              variant="h7"
+              variant="subtitle1"
               className={classes.inline}
               color="textPrimary"
               data-testId="UserName"
@@ -113,7 +128,7 @@ export default function CardWithoutPicture({ tutorial }) {
                 {" for "}
                 <Typography
                   component="span"
-                  variant="h7"
+                  variant="subtitle1"
                   className={classes.inline}
                   color="textPrimary"
                   data-testId="UserOrgName"
@@ -127,10 +142,7 @@ export default function CardWithoutPicture({ tutorial }) {
         subheader={tutorial?.createdAt ? getTime(tutorial?.createdAt) : ""}
       />
       <Link to={`/tutorial/${tutorial?.tutorial_id}`}>
-        <CardContent
-          className={classes.contentPadding}
-          data-testId="codelabzDetails"
-        >
+        <CardContent className={classes.contentPadding}>
           <Typography variant="h5" color="text.primary" data-testId="Title">
             {tutorial?.title}
           </Typography>
@@ -146,18 +158,14 @@ export default function CardWithoutPicture({ tutorial }) {
         </CardContent>
       </Link>
       <CardActions className={classes.settings} disableSpacing>
-        {tutorial?.tut_tags &&
-          tutorial?.tut_tags.map((tag, index) => (
-            <Chip
-              label={tag}
-              key={index}
-              component="a"
-              href="#chip"
-              clickable
-              variant="outlined"
-              className={classes.margin}
-            />
-          ))}
+        <Chip
+          label="HTML"
+          component="a"
+          href="#chip"
+          clickable
+          variant="outlined"
+          className={classes.margin}
+        />
         <Typography
           variant="overline"
           display="block"
@@ -183,4 +191,6 @@ export default function CardWithoutPicture({ tutorial }) {
       </CardActions>
     </Card>
   );
-}
+};
+
+export default CardWithPicture;
