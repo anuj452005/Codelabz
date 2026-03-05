@@ -1,11 +1,15 @@
 import Grid from "@mui/material/Grid";
-import React from "react";
+import React, { FC } from "react";
 import BrandName from "./brandName";
 
-const Spinner = ({ half }) => {
+interface SpinnerProps {
+  half?: boolean;
+}
+
+const Spinner: FC<SpinnerProps> = ({ half }) => {
   return (
     <Grid
-      justify={"center"}
+      justifyContent={"center"}
       style={{ minHeight: half ? "50vh" : "100vh" }}
       alignItems="center"
       container
