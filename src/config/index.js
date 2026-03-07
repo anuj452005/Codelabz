@@ -10,6 +10,8 @@ import "firebase/compat/messaging";
 import { initializeApp } from "firebase/app";
 import { onMessage } from "firebase/messaging";
 
+import { getFirestore, connectFirestoreEmulator } from "firebase/firestore";
+
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_APP_FIREBASE_API_KEY,
   authDomain: import.meta.env.VITE_APP_AUTH_DOMAIN,
@@ -36,8 +38,10 @@ if (import.meta.env.VITE_APP_USE_EMULATOR === "true") {
     .auth()
     .useEmulator("http://localhost:9099", { disableWarnings: true });
   firebase.database().useEmulator("localhost", 9000);
+  firebase.storage().useEmulator("localhost", 9199);
   // firebase.functions().useEmulator("localhost", 5001);
   db.settings({ merge: true });
+  connectFirestoreEmulator(getFirestore(onlineFirebaseApp), "localhost", 8080);
 }
 
 export const functions = firebase.functions();
