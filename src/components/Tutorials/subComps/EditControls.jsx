@@ -31,6 +31,7 @@ const EditControls = ({
   noteID,
   mode,
   toggleImageDrawer,
+  toggleMediaDrawer,
   tutorial_id,
   toggleAddNewStep,
   visibility,
@@ -141,6 +142,15 @@ const EditControls = ({
           startIcon={<InsertDriveFileIcon />}
         >
           Add images
+        </Button>
+        <Button
+          className="ml-24"
+          color="info"
+          onClick={() => toggleMediaDrawer()}
+          id="tutorialAddMedia"
+          startIcon={<InsertDriveFileIcon />}
+        >
+          Attach Media
         </Button>
 
         <Button

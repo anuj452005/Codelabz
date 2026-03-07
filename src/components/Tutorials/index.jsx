@@ -9,6 +9,7 @@ import TutorialHeading from "./subComps/TutorialTitle";
 import EditControls from "./subComps/EditControls";
 import Editor from "../Editor";
 import ImageDrawer from "./subComps/ImageDrawer";
+import MediaDrawer from "./subComps/MediaDrawer";
 import StepsTitle from "./subComps/StepsTitle";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -93,6 +94,7 @@ const ViewTutorial = () => {
   const [mode, setMode] = useState("view");
   const [allowEdit, setAllowEdit] = useState(true);
   const [imageDrawerVisible, setImageDrawerVisible] = useState(false);
+  const [mediaDrawerVisible, setMediaDrawerVisible] = useState(false);
   const [addNewStepModalVisible, setAddNewStepModalVisible] = useState(false);
   const [currentStepContent, setCurrentStepContent] = useState(null);
   const [stepsData, setStepData] = useState(null);
@@ -186,6 +188,7 @@ const ViewTutorial = () => {
                 setMode={mode => setMode(mode)}
                 mode={mode}
                 toggleImageDrawer={() => setImageDrawerVisible(true)}
+                toggleMediaDrawer={() => setMediaDrawerVisible(true)}
                 tutorial_id={tutorialData.tutorial_id}
                 toggleAddNewStep={() =>
                   setAddNewStepModalVisible(!addNewStepModalVisible)
@@ -305,6 +308,15 @@ const ViewTutorial = () => {
                   owner={tutorialData.owner}
                   tutorial_id={tutorialData.tutorial_id}
                   imageURLs={tutorialData.imageURLs}
+                />
+              )}
+              {mediaDrawerVisible && (
+                <MediaDrawer
+                  visible={mediaDrawerVisible}
+                  onClose={() => setMediaDrawerVisible(false)}
+                  owner={tutorialData.owner}
+                  tutorial_id={tutorialData.tutorial_id}
+                  mediaFiles={tutorialData.mediaFiles}
                 />
               )}
               <AddNewStepModal

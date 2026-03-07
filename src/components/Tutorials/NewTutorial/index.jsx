@@ -20,6 +20,7 @@ import MovieIcon from "@mui/icons-material/Movie";
 import Select from "react-select";
 import { common } from "@mui/material/colors";
 import CloseIcon from "@mui/icons-material/Close";
+import MediaDrawer from "../../Tutorials/subComps/MediaDrawer";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -65,6 +66,8 @@ const NewTutorial = ({ viewModal, onSidebarClick, viewCallback, active }) => {
     owner: "",
     tags: []
   });
+  const [mediaDrawerOpen, setMediaDrawerOpen] = useState(false);
+  const [mediaDrawerTab, setMediaDrawerTab] = useState(0);
 
   const loadingProp = useSelector(
     ({
@@ -115,6 +118,14 @@ useEffect(() => {
         profile: { displayName }
       }
     }) => displayName
+  );
+  
+  const userHandle = useSelector(
+    ({
+      firebase: {
+        profile: { handle }
+      }
+    }) => handle
   );
 
   //This name should be replaced by displayName when implementing backend
@@ -230,10 +241,13 @@ useEffect(() => {
         >
           <Typography>
             <Select
-              options={organizations?.map(org => ({
-                value: org.org_handle,
-                label: org.org_name
-              }))}
+              options={[
+                ...(userHandle ? [{ value: userHandle, label: displayName || userHandle }] : []),
+                ...(organizations || []).map(org => ({
+                  value: org.org_handle,
+                  label: org.org_name
+                }))
+              ]}
               onChange={data => {
                 onOwnerChange(data.value);
               }}
@@ -302,15 +316,9 @@ useEffect(() => {
             ))}
           </div>
 
-          <IconButton>
-            <ImageIcon />
-          </IconButton>
-          <IconButton>
-            <MovieIcon />
-          </IconButton>
-          <IconButton>
-            <DescriptionIcon />
-          </IconButton>
+          <IconButton title="Upload Image"    onClick={() => { setMediaDrawerTab(0); setMediaDrawerOpen(true); }}><ImageIcon /></IconButton>
+          <IconButton title="Upload Video"    onClick={() => { setMediaDrawerTab(1); setMediaDrawerOpen(true); }}><MovieIcon /></IconButton>
+          <IconButton title="Upload Document" onClick={() => { setMediaDrawerTab(2); setMediaDrawerOpen(true); }}><DescriptionIcon /></IconButton>
 
           <div className="mb-0">
             <div style={{ float: "right" }}>
@@ -359,6 +367,14 @@ useEffect(() => {
             </div>
           </div>
         </form>
+        <MediaDrawer
+          visible={mediaDrawerOpen}
+          onClose={() => setMediaDrawerOpen(false)}
+          owner={formValue.owner}
+          tutorial_id={null}
+          mediaFiles={[]}
+          defaultTab={mediaDrawerTab}
+        />
       </div>
     </Modal>
   );
