@@ -24,12 +24,13 @@ import SmButtons from "../smButton/smButtons";
 import ViewAlerts from "./ViewAlerts";
 import useStyles from "./styles";
 import PropTypes from "prop-types";
+import { useTheme } from "@mui/material/styles";
 
 const Login = ({
   loginButton = "blue",
-  background = "white",
   loginText = "Welcome Back"
 }) => {
+  const theme = useTheme();
   const firebase = useFirebase();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -125,7 +126,7 @@ const Login = ({
     <Card
       raised
       className={`${classes.card}   `}
-      style={{ background: background }}
+      style={{ background: theme.palette.background.paper }}
       data-testId="login"
     >
       <CardContent>

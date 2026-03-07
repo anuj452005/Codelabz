@@ -18,8 +18,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { getNotificationData } from "../../store/actions";
 import { useFirebase, useFirestore } from "react-redux-firebase";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
+import { useTheme } from "@mui/material/styles";
 
-const Notification = ({ background = "white", textColor = "black" }) => {
+const Notification = ({ textColor = "black" }) => {
+  const theme = useTheme();
   const classes = useStyles();
   const dispatch = useDispatch();
   const firebase = useFirebase();
@@ -106,7 +108,7 @@ const Notification = ({ background = "white", textColor = "black" }) => {
     <>
       <section
         className={classes.wrapper}
-        style={{ background: background }}
+        style={{ background: theme.palette.background.default }}
         data-testId="homepage"
       >
         <Grid className={classes.contentPart}>

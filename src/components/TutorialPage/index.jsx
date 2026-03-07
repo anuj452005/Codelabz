@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Card from "@mui/material/Card";
+import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import PostDetails from "./components/PostDetails";
 import Tutorial from "./components/Tutorial";
@@ -19,7 +20,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useFirebase, useFirestore } from "react-redux-firebase";
 import { useParams, useHistory } from "react-router-dom";
 
-function TutorialPage({ background = "white", textColor = "black" }) {
+function TutorialPage({ textColor = "black" }) {
+  const theme = useTheme();
   const classes = useStyles();
   const { id } = useParams();
   const history = useHistory();
@@ -104,7 +106,7 @@ function TutorialPage({ background = "white", textColor = "black" }) {
   return (
     <Box
       className={classes.wrapper}
-      style={{ background: background }}
+      style={{ background: theme.palette.background.default }}
       data-testId="tutorialpage"
     >
       <Grid container className={classes.contentPart} justifyContent="center">

@@ -7,17 +7,16 @@ import * as serviceWorker from "./serviceWorker";
 import store, { rrfProps } from "./store";
 import { ReactReduxFirebaseProvider } from "react-redux-firebase";
 import { Provider } from "react-redux";
-import { ThemeProvider } from "@mui/styles";
-import { theme } from "./helpers/themes";
+import { ThemeContextProvider } from "./ThemeContext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Provider store={store}>
-      <ThemeProvider theme={theme}>
+      <ThemeContextProvider>
         <ReactReduxFirebaseProvider {...rrfProps}>
           <App />
         </ReactReduxFirebaseProvider>
-      </ThemeProvider>
+      </ThemeContextProvider>
     </Provider>
   </React.StrictMode>
 );

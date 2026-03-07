@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { Alert } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
@@ -43,7 +44,8 @@ import {
 } from "../../helpers/validations";
 import PropTypes from "prop-types";
 
-const Dashboard = ({ background = "white", textColor = "black" }) => {
+const Dashboard = ({ textColor = "black" }) => {
+  const theme = useTheme();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [showOrgForm, setShowOrgForm] = useState(null);
@@ -286,13 +288,13 @@ const Dashboard = ({ background = "white", textColor = "black" }) => {
   };
 
   return (
-    <div className="home-row" style={{ background: background }}>
+    <div className="home-row" style={{ background: theme.palette.background.default }}>
       <Grid container alignItems="center" justify="space-between">
         <Grid xs={12} className="col-pad-24 pt-32" item={true}>
-          <h2 className="mb-0 center" style={{ color: textColor }}>
+          <h2 className="mb-0 center" style={{ color: theme.palette.text.primary }}>
             Welcome to CodeLabz!
           </h2>
-          <h3 className="mb-0 center" style={{ color: textColor }}>
+          <h3 className="mb-0 center" style={{ color: theme.palette.text.primary }}>
             Let's complete your profile before we dive in.
           </h3>
         </Grid>
@@ -466,7 +468,7 @@ const Dashboard = ({ background = "white", textColor = "black" }) => {
                   <Box mt={2} mb={2} m={3}>
                     <Typography>
                       <Box fontSize={16} fontWeight="fontWeightBold" m={1}>
-                        <p className="mb-0 " style={{ color: textColor }}>
+                        <p className="mb-0 " style={{ color: theme.palette.text.primary }}>
                           Organization Details
                         </p>
                       </Box>

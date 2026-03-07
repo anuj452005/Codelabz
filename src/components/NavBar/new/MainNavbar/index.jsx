@@ -1,4 +1,5 @@
 import { Grid, IconButton, InputBase, Paper, Typography } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import { makeStyles } from "@mui/styles";
 import React, { useState } from "react";
 import Headroom from "react-headroom";
@@ -16,7 +17,7 @@ import useWindowSize from "../../../../helpers/customHooks/useWindowSize";
 const useStyles = makeStyles(theme => ({
   input: {
     marginLeft: theme.spacing(1),
-    color: "#3e5060",
+    color: theme.palette.text.primary,
     letterSpacing: "0.5px",
     flex: 1,
     width: "92%",
@@ -25,9 +26,9 @@ const useStyles = makeStyles(theme => ({
     }
   },
   root: {
-    backgroundColor: theme.palette.grey[50],
+    backgroundColor: theme.palette.mode === "dark" ? theme.palette.grey[800] : theme.palette.grey[50],
     padding: "2px",
-    border: "1px solid #ced4da",
+    border: `1px solid ${theme.palette.mode === "dark" ? theme.palette.grey[700] : "#ced4da"}`,
     borderRadius: "0.8rem"
   },
   icon: {
@@ -81,12 +82,14 @@ function MainNavbar() {
     }
   };
 
+  const theme = useTheme();
+
   return (
     <Headroom>
       <nav
         style={{
           padding: "10px",
-          background: "white"
+          background: theme.palette.background.paper
         }}
       >
         <Grid

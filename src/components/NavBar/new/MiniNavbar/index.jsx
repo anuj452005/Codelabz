@@ -6,6 +6,7 @@ import {
   InputBase,
   Paper
 } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import { makeStyles } from "@mui/styles";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
@@ -15,6 +16,9 @@ import SearchIcon from "@mui/icons-material/Search";
 import { useHistory } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
+import { ThemeContext } from "../../../../ThemeContext";
 import SideBar from "../../../SideBar";
 import useWindowSize from "../../../../helpers/customHooks/useWindowSize";
 import { useSelector } from "react-redux";
@@ -25,13 +29,13 @@ const useStyles = makeStyles(theme => ({
   input: {
     marginLeft: theme.spacing(1),
     flex: 1,
-    color: "#3e5060",
+    color: theme.palette.text.primary,
     letterSpacing: "0.5px"
   },
   root: {
-    backgroundColor: theme.palette.grey[50],
+    backgroundColor: theme.palette.mode === "dark" ? theme.palette.grey[800] : theme.palette.grey[50],
     padding: "2px",
-    border: "1px solid #ced4da",
+    border: `1px solid ${theme.palette.mode === "dark" ? theme.palette.grey[700] : "#ced4da"}`,
     borderRadius: "0.8rem",
     width: "100%"
   },
@@ -81,6 +85,7 @@ function MiniNavbar() {
   const toggleSlider = () => {
     setOpen(!openMenu);
   };
+  const colorMode = React.useContext(ThemeContext);
 
   const windowSize = useWindowSize();
 
@@ -123,12 +128,14 @@ function MiniNavbar() {
     };
   }, [screenSize]);
 
+  const theme = useTheme();
+
   return (
     <Headroom disableInlineStyles>
       <nav
         style={{
           padding: "10px",
-          background: "white"
+          background: theme.palette.background.paper
         }}
       >
         <Grid
@@ -191,7 +198,10 @@ function MiniNavbar() {
               </Paper>
             </Grid>
           )}
-          <Grid item className={classes.gridButton}>
+          <Grid item className={classes.gridButton} style={{ display: 'flex', alignItems: 'center' }}>
+            <IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode} color="inherit" style={{ marginRight: '10px' }}>
+              {colorMode.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+            </IconButton>
             <Button
               variant="contained"
               color="primary"

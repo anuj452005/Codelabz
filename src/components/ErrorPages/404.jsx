@@ -3,6 +3,7 @@ import errorImg from "../../assets/images/404.png";
 import { makeStyles } from "@mui/styles";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
+import { useTheme } from "@mui/material/styles";
 
 const useStyles = makeStyles(theme => ({
   wrapper: {
@@ -65,14 +66,15 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const NotFound = ({ background = "white", textColor = "black" }) => {
+const NotFound = ({ textColor = "black" }) => {
+  const theme = useTheme();
   const classes = useStyles();
 
   return (
     <Grid
       container
       className={`row-fullheight ${classes.wrapper}`}
-      style={{ background: background }}
+      style={{ background: theme.palette.background.default }}
       data-testId="errorPage"
     >
       <Grid

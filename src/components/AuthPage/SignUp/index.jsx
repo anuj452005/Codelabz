@@ -9,8 +9,10 @@ import SmButtons from "../smButton/smButtons";
 import SignupForm from "./signupForm";
 import useStyles from "./styles";
 import PropTypes from "prop-types";
+import { useTheme } from "@mui/material/styles";
 
-const SignUp = ({ background = "white" }) => {
+const SignUp = () => {
+  const theme = useTheme();
   const classes = useStyles();
   const handleMouseEnter = e => {
     e.target.style.color = "royalblue";
@@ -25,7 +27,7 @@ const SignUp = ({ background = "white" }) => {
       className={classes.card}
       data-testId="signUp"
       style={{
-        background: background,
+        background: theme.palette.background.paper,
         maxWidth: "520px",
         alignItems: "center",
         boxShadow: "none",

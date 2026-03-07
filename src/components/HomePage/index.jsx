@@ -40,7 +40,10 @@ import {
 import { getTutorialsByTopTags,getAllTags,getFilteredTutorials } from "../../store/actions";
 
 
-function HomePage({ background = "white", textColor = "black" }) {
+import { useTheme } from "@mui/material/styles";
+
+function HomePage({ textColor = "black" }) {
+  const theme = useTheme();
   const classes = useStyles();
   const dispatch = useDispatch();
   const firebase = useFirebase();
@@ -206,7 +209,7 @@ function HomePage({ background = "white", textColor = "black" }) {
   return (
     <Card
       className={classes.wrapper}
-      style={{ background: background }}
+      style={{ background: theme.palette.background.default }}
       data-testId="homepage"
     >
       <Grid container justifyContent="center" className={classes.contentPart}>
