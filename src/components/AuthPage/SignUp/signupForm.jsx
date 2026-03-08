@@ -18,6 +18,7 @@ import { useHistory } from "react-router-dom"; // Import useHistory
 import validator from "validator";
 import { clearAuthError, signUp } from "../../../store/actions";
 import Card from "@mui/material/Card";
+import { useTheme } from "@mui/material/styles";
 
 const SignupForm = () => {
   const [loading, setLoading] = useState(false);
@@ -26,6 +27,7 @@ const SignupForm = () => {
   const firebase = useFirebase();
   const dispatch = useDispatch();
   const history = useHistory(); // Initialize useHistory
+  const theme = useTheme();
   const errorProp = useSelector(({ auth }) => auth.profile.error);
   const loadingProp = useSelector(({ auth }) => auth.profile.loading);
 
@@ -239,7 +241,7 @@ const SignupForm = () => {
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
-                <MailOutlined style={{ color: "rgba(0,0,0,.25)" }} />
+                <MailOutlined style={{ color: theme.palette.text.disabled }} />
               </InputAdornment>
             )
           }}
@@ -263,7 +265,7 @@ const SignupForm = () => {
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
-                <LockOutlined style={{ color: "rgba(0,0,0,.25)" }} />
+                <LockOutlined style={{ color: theme.palette.text.disabled }} />
               </InputAdornment>
             ),
             endAdornment: (
@@ -299,7 +301,7 @@ const SignupForm = () => {
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
-                <LockOutlined style={{ color: "rgba(0,0,0,.25)" }} />
+                <LockOutlined style={{ color: theme.palette.text.disabled }} />
               </InputAdornment>
             ),
             endAdornment: (
@@ -329,7 +331,7 @@ const SignupForm = () => {
           label="By creating an account, you agree to our terms and conditions."
         />
         {agreedText && !agreed ? (
-          <div style={{ color: "red", padding: "5px" }}>
+          <div style={{ color: theme.palette.error.main, padding: "5px" }}>
             {" "}
             You have to agree to our terms and conditions in order to register
           </div>

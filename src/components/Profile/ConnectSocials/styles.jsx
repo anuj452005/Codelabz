@@ -86,6 +86,7 @@ const useStyles = makeStyles(theme => ({
   git: {
     fontSize: 26,
     marginRight: 19,
+    color: theme.palette.text.primary,
     "&:hover": {
       transform: "scale(1.2)"
     },
@@ -96,7 +97,7 @@ const useStyles = makeStyles(theme => ({
   },
   text: {
     fontFamily: "Poppins",
-    color: "#000",
+    color: theme.palette.text.primary,
     "@media (max-width: 500px)": {
       fontSize: 12
     }

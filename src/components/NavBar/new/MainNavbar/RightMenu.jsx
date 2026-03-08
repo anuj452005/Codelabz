@@ -28,7 +28,7 @@ import {
   ListItem,
   Typography
 } from "@mui/material";
-import { useTheme } from "@mui/styles";
+import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
@@ -251,8 +251,8 @@ const RightMenu = ({ mode, onClick }) => {
         style={{
           backgroundColor:
             profile.photoURL && profile.photoURL.length > 0
-              ? "#fffff"
-              : "#3AAFA9",
+              ? "transparent"
+              : theme.palette.primary.main,
           marginLeft: "1rem",
           marginBottom: ".2rem",
           cursor: "pointer"

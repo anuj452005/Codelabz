@@ -116,10 +116,10 @@ const Login = ({
   };
 
   const handleMouseEnter = e => {
-    e.target.style.color = "royalblue";
+    e.target.style.color = theme.palette.primary.dark;
   };
   const handleMouseLeave = e => {
-    e.target.style.color = "#03AAFA";
+    e.target.style.color = theme.palette.primary.main;
   };
 
   return (
@@ -160,7 +160,7 @@ const Login = ({
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  <MailOutlined style={{ color: "rgba(0,0,0,.25)" }} />
+                  <MailOutlined style={{ color: theme.palette.text.disabled }} />
                 </InputAdornment>
               )
             }}
@@ -184,7 +184,7 @@ const Login = ({
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  <LockOutlined style={{ color: "rgba(0,0,0,.25)" }} />
+                  <LockOutlined style={{ color: theme.palette.text.disabled }} />
                 </InputAdornment>
               ),
               endAdornment: (
