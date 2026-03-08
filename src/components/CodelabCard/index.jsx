@@ -9,6 +9,7 @@ import CardHeader from "@mui/material/CardHeader";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import Button from "@mui/material/Button";
 import ChatIcon from "@mui/icons-material/Chat";
+import { useTheme } from "@mui/material/styles";
 import useStyles from "./styles";
 import PropTypes from "prop-types";
 
@@ -17,9 +18,10 @@ const CardComponent = ({
   tags = "#css #webdev #beginners #html",
   profilePic = "demoperson4.jpeg",
   org = false,
-  background = "white"
+  background
 }) => {
   const classes = useStyles();
+  const theme = useTheme();
   const [logoPath, setLogoPath] = React.useState("");
   React.useEffect(() => {
     setLogoPath(org);
@@ -30,7 +32,7 @@ const CardComponent = ({
       <Card
         maxWidth="sm"
         className={classes.card}
-        style={{ background: background }}
+        style={{ background: background || theme.palette.background.paper }}
         data-testId="codelabzCard"
       >
         <CardHeader
@@ -128,7 +130,7 @@ const CardComponent = ({
             <Grid item direction="row">
               {!org ? (
                 <Grid item style={{ height: "2rem" }}>
-                  <IconButton style={{ color: "red" }}>
+                  <IconButton style={{ color: theme.palette.error.main }}>
                     <FavoriteIcon />
                   </IconButton>
                   <Typography variant="body" color="textPrimary">
@@ -140,7 +142,7 @@ const CardComponent = ({
               )}
             </Grid>
             <Grid item>
-              <IconButton aria-label="comment" style={{ color: "green" }}>
+              <IconButton aria-label="comment" style={{ color: theme.palette.success.main }}>
                 <ChatIcon />
               </IconButton>
               {org ? (
@@ -175,7 +177,7 @@ const CardComponent = ({
               <Button
                 variant="contained"
                 color="primary"
-                style={{ backgroundColor: "royalblue", margin: "16px" }}
+                style={{ margin: "16px" }}
               >
                 Save
               </Button>

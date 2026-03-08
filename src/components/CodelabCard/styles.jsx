@@ -3,61 +3,73 @@ import { makeStyles } from "@mui/styles";
 const useStyles = makeStyles(theme => ({
   card: {
     margin: ".5rem",
-    width: "50vw",
+    width: "100%",
+    maxWidth: "500px",
     position: "relative",
-    maxWidth: "80vw",
     textAlign: "left",
     minHeight: "20vh",
     display: "flex",
     justifyContent: "center",
     flexDirection: "column",
-    [theme.breakpoints.down(750)]: {
-      width: "90vw"
+    [theme.breakpoints.down("md")]: {
+      maxWidth: "100%",
+      margin: ".25rem"
+    },
+    [theme.breakpoints.down("sm")]: {
+      minHeight: "18vh"
     }
   },
   heading: {
     fontWeight: 700,
     marginTop: "-.5rem",
-    [theme.breakpoints.down(750)]: {
+    [theme.breakpoints.down("md")]: {
+      fontSize: "1.1rem"
+    },
+    [theme.breakpoints.down("sm")]: {
       fontSize: "1rem"
     }
   },
   body: {
     padding: "0rem 2rem 0rem 3.5rem",
     paddingBottom: "0rem",
-    [theme.breakpoints.down(750)]: {
-      padding: "0rem 1rem 0rem 1rem",
-      justify: "center",
+    [theme.breakpoints.down("md")]: {
+      padding: "0rem 1.5rem 0rem 2rem"
+    },
+    [theme.breakpoints.down("sm")]: {
+      padding: "0rem 1rem",
       textAlign: "left"
     }
   },
   tags: {
     fontWeight: "500",
-    color: "#455A64"
+    color: theme.palette.text.secondary
   },
   avatar: {
     height: "2rem",
     width: "2rem",
     position: "relative",
     left: "1rem",
-    border: "1.5px solid black",
-    borderRadius: "500px"
+    border: `1.5px solid ${theme.palette.divider}`,
+    borderRadius: "50%"
   },
   cardContent: {
     paddingTop: "1rem"
   },
   cardAction: {
     padding: "0rem 0rem 0rem 3.8rem",
-    [theme.breakpoints.down(750)]: {
-      padding: "0"
+    [theme.breakpoints.down("md")]: {
+      padding: "0rem 0rem 0rem 2rem"
+    },
+    [theme.breakpoints.down("sm")]: {
+      padding: "0rem 1rem"
     }
   },
   button: {
-    background: "#BCBCBC",
+    background: theme.palette.action.disabled,
     width: "1rem",
     height: "2rem",
     marginBottom: ".5rem",
-    [theme.breakpoints.down(750)]: {
+    [theme.breakpoints.down("sm")]: {
       height: "1.4rem"
     }
   },
@@ -79,9 +91,8 @@ const useStyles = makeStyles(theme => ({
     padding: "1rem 1rem 0rem 1rem"
   },
   readTime: {
-    [theme.breakpoints.down(750)]: {
-      fontSize: ".5rem",
-      background: "red",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: ".75rem",
       display: "none"
     }
   },
@@ -89,15 +100,15 @@ const useStyles = makeStyles(theme => ({
     width: "2rem",
     height: ".5rem",
     marginTop: "-1.5rem",
-    border: "0.1px solid #f4f4f4"
+    border: `0.1px solid ${theme.palette.divider}`
   },
   personImg: {
     zIndex: 2,
     position: "relative",
     left: "1.5rem",
     top: "-.6rem",
-    border: "1px solid black",
-    borderRadius: "500px"
+    border: `1px solid ${theme.palette.divider}`,
+    borderRadius: "50%"
   },
   logoImg: {
     height: "1rem"

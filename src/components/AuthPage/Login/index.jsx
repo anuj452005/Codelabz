@@ -24,12 +24,13 @@ import SmButtons from "../smButton/smButtons";
 import ViewAlerts from "./ViewAlerts";
 import useStyles from "./styles";
 import PropTypes from "prop-types";
+import { useTheme } from "@mui/material/styles";
 
 const Login = ({
   loginButton = "blue",
-  background = "white",
   loginText = "Welcome Back"
 }) => {
+  const theme = useTheme();
   const firebase = useFirebase();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -115,17 +116,17 @@ const Login = ({
   };
 
   const handleMouseEnter = e => {
-    e.target.style.color = "royalblue";
+    e.target.style.color = theme.palette.primary.dark;
   };
   const handleMouseLeave = e => {
-    e.target.style.color = "#03AAFA";
+    e.target.style.color = theme.palette.primary.main;
   };
 
   return (
     <Card
       raised
       className={`${classes.card}   `}
-      style={{ background: background }}
+      style={{ background: theme.palette.background.paper }}
       data-testId="login"
     >
       <CardContent>
@@ -159,7 +160,7 @@ const Login = ({
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  <MailOutlined style={{ color: "rgba(0,0,0,.25)" }} />
+                  <MailOutlined style={{ color: theme.palette.text.disabled }} />
                 </InputAdornment>
               )
             }}
@@ -183,7 +184,7 @@ const Login = ({
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  <LockOutlined style={{ color: "rgba(0,0,0,.25)" }} />
+                  <LockOutlined style={{ color: theme.palette.text.disabled }} />
                 </InputAdornment>
               ),
               endAdornment: (

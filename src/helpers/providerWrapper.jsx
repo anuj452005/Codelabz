@@ -3,16 +3,15 @@ import { Router } from "react-router";
 import { Provider } from "react-redux";
 import store, { rrfProps } from "../store";
 import { ReactReduxFirebaseProvider } from "react-redux-firebase";
-import { ThemeProvider } from "@mui/styles";
-import { theme } from "./themes";
+import { ThemeContextProvider } from "../ThemeContext";
 
 const ProviderWrapper = ({ children }) => (
   <Provider store={store}>
-    <ThemeProvider theme={theme}>
+    <ThemeContextProvider>
       <ReactReduxFirebaseProvider {...rrfProps}>
         {children}
       </ReactReduxFirebaseProvider>
-    </ThemeProvider>
+    </ThemeContextProvider>
   </Provider>
 );
 

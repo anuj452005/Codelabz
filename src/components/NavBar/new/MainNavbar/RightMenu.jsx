@@ -14,6 +14,10 @@ import { Link, useLocation } from "react-router-dom";
 import MenuItem from "@mui/material/MenuItem";
 import Grid from "@mui/material/Grid";
 import Menu from "@mui/material/Menu";
+import IconButton from "@mui/material/IconButton";
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
+import { ThemeContext } from "../../../../ThemeContext";
 import { makeStyles } from "@mui/styles";
 import Divider from "@mui/material/Divider";
 import {
@@ -24,7 +28,7 @@ import {
   ListItem,
   Typography
 } from "@mui/material";
-import { useTheme } from "@mui/styles";
+import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
@@ -51,6 +55,7 @@ const RightMenu = ({ mode, onClick }) => {
   const matches = useMediaQuery(theme.breakpoints.down("sm"));
   const { pathname } = useLocation();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const colorMode = React.useContext(ThemeContext);
 
   const open = Boolean(anchorEl);
   //This will be responsible for closing the rightMenu automatically when route Changes
@@ -234,16 +239,20 @@ const RightMenu = ({ mode, onClick }) => {
   return (
     <Grid
       container
+      alignItems="center"
       style={{
         marginRight: "2rem"
       }}
     >
+      <IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode} color="inherit" style={{ marginRight: '10px' }}>
+        {colorMode.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+      </IconButton>
       <Avatar
         style={{
           backgroundColor:
             profile.photoURL && profile.photoURL.length > 0
-              ? "#fffff"
-              : "#3AAFA9",
+              ? "transparent"
+              : theme.palette.primary.main,
           marginLeft: "1rem",
           marginBottom: ".2rem",
           cursor: "pointer"

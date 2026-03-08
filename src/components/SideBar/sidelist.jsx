@@ -12,6 +12,7 @@ import {
 import { makeStyles } from "@mui/styles";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import Badge from "@mui/material/Badge";
+import { useTheme } from "@mui/material/styles";
 
 const useStyles = makeStyles(theme => ({
   icons: {
@@ -79,6 +80,8 @@ const SideList = ({
 }) => {
   const classes = useStyles();
   const location = useLocation();
+  const theme = useTheme();
+  const isDark = theme.palette.mode === "dark";
 
   /**
    * * Cases for rendering the menu items
@@ -97,7 +100,7 @@ const SideList = ({
               key="menu-items"
               style={
                 item.link == location.pathname
-                  ? { background: "#d9f1fc", borderRadius: "100px" }
+                  ? { background: isDark ? "rgba(3, 170, 250, 0.15)" : "#d9f1fc", borderRadius: "100px" }
                   : {}
               }
               data-testId={item?.dataTestId}
@@ -124,6 +127,7 @@ const SideList = ({
                               alt={"..."}
                               src={item.img}
                               className={classes.icons}
+                              style={{ filter: isDark ? "brightness(0) invert(1)" : "none" }}
                             />
                           </Badge>
                         ) : (
@@ -131,6 +135,7 @@ const SideList = ({
                             alt={"..."}
                             src={item.img}
                             className={classes.icons}
+                            style={{ filter: isDark ? "brightness(0) invert(1)" : "none" }}
                           />
                         )}
                       </ListItemIcon>
@@ -141,7 +146,7 @@ const SideList = ({
                         fontWeight:
                           item?.id && value === item?.id ? "bold" : "normal",
                         color:
-                          item?.link == location.pathname ? "#0293d9" : "black"
+                          item?.link == location.pathname ? (isDark ? "#33bfff" : "#0293d9") : theme.palette.text.primary
                       }}
                       disableTypography
                     >
@@ -180,7 +185,7 @@ const SideList = ({
                       fontWeight:
                         item?.id && value === item?.id ? "bold" : "normal",
                       color:
-                        item?.link == location.pathname ? "#0293d9" : "black"
+                        item?.link == location.pathname ? (isDark ? "#33bfff" : "#0293d9") : theme.palette.text.primary
                     }}
                     disableTypography
                   >
@@ -203,6 +208,7 @@ const SideList = ({
                         alt={"..."}
                         src={item.img}
                         className={classes.icons}
+                        style={{ filter: isDark ? "brightness(0) invert(1)" : "none" }}
                       />
                     </ListItemIcon>
                   )}
@@ -212,7 +218,7 @@ const SideList = ({
                       fontWeight:
                         item?.id && value === item?.id ? "bold" : "normal",
                       color:
-                        item?.link == location.pathname ? "#0293d9" : "black"
+                        item?.link == location.pathname ? (isDark ? "#33bfff" : "#0293d9") : theme.palette.text.primary
                     }}
                     disableTypography
                   >

@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#E8E8E8",
+    backgroundColor: theme.palette.mode === "dark" ? theme.palette.grey[800] : "#E8E8E8",
     width: 285,
     borderRadius: 7,
     boxShadow: "none",
@@ -74,6 +74,7 @@ const useStyles = makeStyles(theme => ({
     fontSize: 26,
     marginLeft: 0,
     marginRight: 8,
+    color: theme.palette.text.primary,
     "@media (max-width: 600px)": {
       marginRight: 3,
       fontSize: 18
@@ -81,7 +82,7 @@ const useStyles = makeStyles(theme => ({
   },
   text: {
     fontFamily: "Poppins",
-    color: "#000000B6",
+    color: theme.palette.text.secondary,
     "@media (max-width: 600px)": {
       fontSize: 10
     }
