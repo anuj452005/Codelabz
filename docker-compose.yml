@@ -1,21 +1,41 @@
 services:
   app:
+    image: codelabz:latest
     build:
       context: .
       dockerfile: Dockerfile
+      target: production
+      # We still need to pass args because Vite injects env vars ONLY during the build stage.
+      # However, Docker Compose can cleanly source these from our local .env file.
+      args:
+        - VITE_APP_FIREBASE_API_KEY=${VITE_APP_FIREBASE_API_KEY}
+        - VITE_APP_AUTH_DOMAIN=${VITE_APP_AUTH_DOMAIN}
+        - VITE_APP_DATABASE_URL=${VITE_APP_DATABASE_URL}
+        - VITE_APP_FIREBASE_PROJECT_ID=${VITE_APP_FIREBASE_PROJECT_ID}
+        - VITE_APP_FIREBASE_STORAGE_BUCKET=${VITE_APP_FIREBASE_STORAGE_BUCKET}
+        - VITE_APP_FIREBASE_MESSAGING_SENDER_ID=${VITE_APP_FIREBASE_MESSAGING_SENDER_ID}
+        - VITE_APP_FIREBASE_APP_ID=${VITE_APP_FIREBASE_APP_ID}
+        - VITE_APP_FIREBASE_MEASUREMENTID=${VITE_APP_FIREBASE_MEASUREMENTID}
+        - VITE_APP_USE_EMULATOR=${VITE_APP_USE_EMULATOR}
+        - VITE_APP_FIREBASE_FCM_VAPID_KEY=${VITE_APP_FIREBASE_FCM_VAPID_KEY}
+    container_name: codelabz-production
+    env_file:
+      - .env
     ports:
-      - 5173:5173
-      - 5001:5001
-      - 9000:9000
-      - 8080:8080
-      - 8085:8085
-      - 5000:5000
-      - 4000:4000
-      - 9199:9199
-      - 9099:9099
-      - 4400:4400
-    volumes:
-      - .:/app
-      - /app/node_modules
-      - /app/functions/node_modules
-      - /app/scripts
+      - "8000:80"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    networks:
+      - codelabz-network
+    labels:
+      - "com.codelabz.description=Codelabz Production Application"
+      - "com.codelabz.version=1.0"
+
+networks:
+  codelabz-network:
+    driver: bridge

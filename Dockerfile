@@ -1,43 +1,54 @@
-FROM node:14
+# Stage 1: Build Image
+# We use node:18-slim identically to dev to prevent native compilation mismatch issues
+FROM node:18-slim AS build
 
-# Set the working directory in the container
 WORKDIR /app
 
-RUN apt update -y && apt install -y openjdk-11-jdk bash
+# Accept Firebase arguments to inject dynamically at build-time (Required by Vite)
+ARG VITE_APP_FIREBASE_API_KEY
+ARG VITE_APP_AUTH_DOMAIN
+ARG VITE_APP_DATABASE_URL
+ARG VITE_APP_FIREBASE_PROJECT_ID
+ARG VITE_APP_FIREBASE_STORAGE_BUCKET
+ARG VITE_APP_FIREBASE_MESSAGING_SENDER_ID
+ARG VITE_APP_FIREBASE_APP_ID
+ARG VITE_APP_FIREBASE_MEASUREMENTID
+ARG VITE_APP_USE_EMULATOR
+ARG VITE_APP_FIREBASE_FCM_VAPID_KEY
 
-RUN npm install -g firebase-tools@11
+ENV VITE_APP_FIREBASE_API_KEY=$VITE_APP_FIREBASE_API_KEY
+ENV VITE_APP_AUTH_DOMAIN=$VITE_APP_AUTH_DOMAIN
+ENV VITE_APP_DATABASE_URL=$VITE_APP_DATABASE_URL
+ENV VITE_APP_FIREBASE_PROJECT_ID=$VITE_APP_FIREBASE_PROJECT_ID
+ENV VITE_APP_FIREBASE_STORAGE_BUCKET=$VITE_APP_FIREBASE_STORAGE_BUCKET
+ENV VITE_APP_FIREBASE_MESSAGING_SENDER_ID=$VITE_APP_FIREBASE_MESSAGING_SENDER_ID
+ENV VITE_APP_FIREBASE_APP_ID=$VITE_APP_FIREBASE_APP_ID
+ENV VITE_APP_FIREBASE_MEASUREMENTID=$VITE_APP_FIREBASE_MEASUREMENTID
+ENV VITE_APP_USE_EMULATOR=$VITE_APP_USE_EMULATOR
+ENV VITE_APP_FIREBASE_FCM_VAPID_KEY=$VITE_APP_FIREBASE_FCM_VAPID_KEY
 
-# Pre-download emulators
-RUN firebase setup:emulators:firestore && \
-    firebase setup:emulators:storage && \
-    firebase setup:emulators:database && \
-    firebase setup:emulators:pubsub && \
-    firebase setup:emulators:ui
-
-# Copy package.json and package-lock.json to the container
+# Build Cache Optimization: Copy only package files first to cache the layer
 COPY package*.json ./
-COPY ./functions/package*.json ./functions/
+RUN npm install --legacy-peer-deps
 
-# Install the project dependencies
-RUN npm install
-RUN cd functions && npm install && cd ..
-
-# Copy the entire project directory to the container
+# Copy the rest of the files and build the application
 COPY . .
+RUN npm run build
 
-# Expose the desired port for the Node.js server
-EXPOSE 5173
-EXPOSE 4000
-EXPOSE 5000
-EXPOSE 5001
-EXPOSE 8080
-EXPOSE 9000
-EXPOSE 8085
-EXPOSE 9199
-EXPOSE 4400
+# Stage 2: Production Serving Image
+FROM nginx:alpine AS production
 
-RUN mkdir -p scripts
-RUN echo '#!/bin/sh \nfirebase emulators:start --import=testdata --project demo-sampark &\nsleep 10\nnpm run dev --host &\nwait' > ./scripts/entrypoint.sh 
-RUN chmod +x ./scripts/entrypoint.sh
+# (Optional) Inject a custom Nginx conf here to handle SPA routing fallback to index.html
+RUN printf 'server {\n\
+    listen 80;\n\
+    root /usr/share/nginx/html;\n\
+    index index.html;\n\
+    location / {\n\
+    try_files $uri $uri/ /index.html;\n\
+    }\n\
+    }\n' > /etc/nginx/conf.d/default.conf
 
-CMD ["./scripts/entrypoint.sh"]
+COPY --from=build /app/dist /usr/share/nginx/html
+
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
